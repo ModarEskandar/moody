@@ -25,15 +25,16 @@ export type IUpdateUser = {
 };
 
 export type INewPost = {
-  userId: string;
+  user_id: string;
   caption: string;
+
   file: File[];
   location?: string;
   tags?: string;
 };
 
 export type IUpdatePost = {
-  postId: string;
+  post_id: string;
   caption: string;
   image_id: string;
   image_url: URL;

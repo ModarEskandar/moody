@@ -15,8 +15,17 @@ import FileUploader from "@/components/shared/FileUploader";
 import { PostSchema } from "@/lib/validations";
 import { PostFormProps } from "@/types";
 import { useForm } from "react-hook-form";
+import { useUserContext } from "@/context/AuthContext";
+import { useToast } from "@/components/ui/use-toast";
+import { useNavigate } from "react-router-dom";
+import { useCreatePost } from "@/lib/react-query/queriesAndMutations";
 
 const PostForm = ({ post }: PostFormProps) => {
+  const { mutateAsync: createPost, isPending: isCreatingPost } =
+    useCreatePost();
+  const { user } = useUserContext();
+  const { toast } = useToast();
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof PostSchema>>({
     resolver: zodResolver(PostSchema),
     defaultValues: {
@@ -26,9 +35,16 @@ const PostForm = ({ post }: PostFormProps) => {
       tags: post ? post.tags?.join(",") : "",
     },
   });
-  function onSubmit(values: z.infer<typeof PostSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+  async function onSubmit(values: z.infer<typeof PostSchema>) {
+    const newPost = await createPost({
+      ...values,
+      user_id: user.id,
+    });
+    if (!newPost)
+      toast({
+        title: "Please try again",
+      });
+    navigate("/");
     console.log(values);
   }
   return (
