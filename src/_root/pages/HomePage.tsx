@@ -1,4 +1,6 @@
+import PostCard from "@/components/shared/PostCard";
 import { useGetRecentPosts } from "@/lib/react-query/queriesAndMutations";
+import { Models } from "appwrite";
 import { Loader } from "lucide-react";
 
 const HomePage = () => {
@@ -11,7 +13,11 @@ const HomePage = () => {
           {isPostsLoading && !posts ? (
             <Loader />
           ) : (
-            <ul>There are {posts?.total}</ul>
+            <ul className="flex flex-col flex-1 gap-10 w-full">
+              {posts?.documents.map((post: Models.Document) => {
+                return <PostCard key={post.$id} post={post}></PostCard>;
+              })}
+            </ul>
           )}
         </div>
       </div>
