@@ -40,11 +40,12 @@ export type IUpdatePost = {
   image_url: URL;
   file: File[];
   location?: string;
-  tags?: string[];
+  tags?: string;
 };
 
 export type PostFormProps = {
   post?: Models.Document;
+  action: "Create" | "Update";
 };
 
 export type IUser = {
@@ -65,5 +66,5 @@ export type INewUser = {
 
 export type FileUploaderProps = {
   fieldChange: (files: File[]) => void;
-  mediaUrl: URL;
+  mediaUrl: string;
 };

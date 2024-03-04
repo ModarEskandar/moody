@@ -21,7 +21,8 @@ import { useUserContext } from "@/context/AuthContext";
 const SigninForm = () => {
   const { toast } = useToast();
 
-  const { mutateAsync: signInAccount } = useSignInAccount();
+  const { mutateAsync: signInAccount, isPending: isSigningIn } =
+    useSignInAccount();
   const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof SigninSchema>>({
@@ -92,13 +93,12 @@ const SigninForm = () => {
             )}
           />
           <Button type="submit" className="shad-button_primary">
-            {isUserLoading ? (
+            {isUserLoading || isSigningIn ? (
               <div className="flex-center gap-2">
-                <Loader />
-                Loading...
+                <Loader /> Loading...
               </div>
             ) : (
-              "Sign in"
+              "Log in"
             )}
           </Button>
           <p className="text-small-regular text-light-2 text-center mt-2">

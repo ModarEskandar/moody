@@ -52,12 +52,15 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
   const navigate = useNavigate();
   useEffect(() => {
-    //      localStorage.getItem("cookieFallback") === null
+    const cookieFallback = localStorage.getItem("cookieFallback");
     if (
-      localStorage.getItem("cookieFallback") === "[]" ||
-      localStorage.getItem("cookieFallback") === null
-    )
+      cookieFallback === "[]" ||
+      cookieFallback === null ||
+      cookieFallback === undefined
+    ) {
       navigate("/sign-in");
+    }
+
     checkAuthUser();
   }, []);
 
